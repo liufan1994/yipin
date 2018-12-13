@@ -2,19 +2,16 @@
  * @Author: hzq
  * @Date: 2018-08-28 17:50:19
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-12 15:41:43
+ * @Last Modified time: 2018-12-13 22:10:55
  * @文件说明: 所有路由处理
  */
 import channel from './channel'
+
 let all = Object.assign(
     {
         '/': [
-            { name: 'login' }
-            // {
-            //     name: 'home',
-            //     children: ['publish-article', 'my-article'],
-            //     meta: { requiresAuth: true }
-            // }
+            { name: 'login' },
+            { name: 'index', children: ['index1', 'index2'] }
         ]
     },
     channel
@@ -54,5 +51,4 @@ for (let k in all) {
         routes.push(p_obj)
     })
 }
-
 export default routes
