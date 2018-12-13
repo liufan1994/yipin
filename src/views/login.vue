@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-12 14:32:27
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-13 14:39:54
+ * @Last Modified time: 2018-12-13 15:16:54
  * @文件说明:登录页面
  */
 <template>
@@ -22,15 +22,19 @@
                 <img class="input_icon" src="../assets/images/password.png" alt="icon">
                 <input type="text" placeholder="密码">
             </div>
-            <div class="input_bg">
-                <img class="input_icon" src="../assets/images/code.png" alt="icon">
-                <input type="text" placeholder="验证码">
-                <img class="change" src="../assets/images/change_icon.png" alt="icon">
-                <img class="code_img" src="../assets/images/code_img.png" alt="icon">
+            <div class="input_bg1">
+                <div class="input_left">
+                    <img class="input_icon" src="../assets/images/code.png" alt="icon">
+                    <input type="text" placeholder="验证码">
+                </div>
+                <div class="input_right">
+                    <img class="change" src="../assets/images/change_icon.png" alt="icon">
+                    <img class="code_img" src="../assets/images/code_img.png" alt="icon">
+                </div>
             </div>
             <div class="operation">
-                <div class="automatic">
-                    <div class="checkbox"></div>
+                <div class="automatic" @click="automaticFun">
+                    <div class="checkbox" :class="{checkbox_pitch:automatic1}"></div>
                     <p class="automatic_text">下次自动登录</p>
                 </div>
                 <p class="forget">忘记密码？</p>
@@ -51,7 +55,15 @@
 </template>
 <script>
     export default {
-        name: 'login'
+        name: 'login',
+        data() {
+            automatic1: false
+        },
+        methods: {
+            automaticFun() {
+                this.automatic1 = !this.automatic1
+            }
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -80,7 +92,8 @@
             color: #666;
             margin-bottom: 2.6vw;
         }
-        .input_bg {
+        .input_bg,
+        .input_bg1 {
             display: flex;
             align-items: center;
             width: 20.83vw;
@@ -101,6 +114,17 @@
                     font-size: 0.9vw;
                 }
             }
+        }
+    }
+    .input_bg1 {
+        display: flex;
+        justify-content: space-between;
+        .input_left {
+            display: flex;
+        }
+        .input_right {
+            display: flex;
+            align-items: center;
             .change {
                 width: 1.14vw;
                 height: 0.94vw;
@@ -108,6 +132,8 @@
             }
             .code_img {
                 width: 5.83vw;
+                height: 2.45vw;
+                margin-right: 0.31vw;
             }
         }
     }
@@ -122,6 +148,9 @@
                 height: 1.14vw;
                 background-image: url(../assets/images/checkbox.png);
                 background-size: 100%;
+            }
+            .checkbox_pitch {
+                background-image: url(../assets/images/checkbox_pitch.png);
             }
             .automatic_text {
                 color: #999;
