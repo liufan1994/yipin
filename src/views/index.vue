@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-15 00:28:29
+ * @Last Modified time: 2018-12-15 01:15:45
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -25,20 +25,22 @@
             </div>
         </div>
         <div class="sidebar">
-            <div class="sidebar_bg" v-for="i in sidebar" :key="i.icon">
-                <div class="sidebar_menu" @click="sidebar_menuFun(i)" :class="{sidebar_menu1:i.selection}">
+            <div class="sidebar_bg" v-for="(i,index) in sidebar" :key="index">
+                <div class="sidebar_menu" @click="sidebar_menuFun(i,index)" :class="{sidebar_menu1:index===currIndex&&i.icon1}">
                     <div class="sidebar_left">
-                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon+'.png')" alt="icon" v-if="!i.selection">
-                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon1+'.png')" alt="icon" v-if="i.selection">
-                        <div class="sidebar_title" :class="{sidebar_title1:i.selection}">{{i.name}}</div>
+                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon1+'.png')" alt="icon" v-if="index===currIndex&&i.icon1">
+                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon+'.png')" alt="icon" v-else>
+                        <div class="sidebar_title">{{i.name}}</div>
                     </div>
                     <img class="sidebar_icon" v-if="i.open&&i.children" src="../assets/images/jianIcon.png" alt="icon">
                     <img class="sidebar_icon" v-else-if="i.children" src="../assets/images/addIcon.png" alt="icon">
                 </div>
-                <div class="sublist" v-for="h in i.children" :key="h.name" v-if="i.open" @click="childrenFun(h)" :class="{sublist1:h.selection1}">
-                    <div class="sublist_spot" :class="{sublist_spot1:h.selection1}"></div>
-                    <div class="sublist_name" :class="{sublist_name1:h.selection1}"> {{h.name1}} </div>
-                </div>
+                <template v-if="i.open">
+                    <div class="sublist" v-for="h in i.children" :key="h.name" @click="childrenFun(h,index)" :class="{sublist1:h.selection1}">
+                        <div class="sublist_spot"></div>
+                        <div class="sublist_name"> {{h.name1}} </div>
+                    </div>
+                </template>
             </div>
         </div>
         <router-view class="routerView"></router-view>
@@ -49,7 +51,7 @@
         name: 'index',
         data() {
             return {
-                currCode: 0,
+                currIndex: 0,
                 // JSON [{},{},{}]
                 sidebar: [
                     {
@@ -57,17 +59,131 @@
                         icon: 'homepage',
                         icon1: 'homepage_pitch',
                         // 菜单中文名
-                        name: '主页',
+                        name: '主页'
                         //菜单是否选中
-                        selection: true
                     },
                     {
                         // 图标
                         icon: 'daily',
                         // 菜单中文名
                         name: '日常管理',
+                        // 子菜单是否展开
+                        open: false,
+                        // 子菜单
+                        children: [
+                            {
+                                name1: '团购管理',
+                                // 子菜单是否选中
+                                selection1: false
+                            }
+                        ]
+                    },
+                    {
+                        // 图标
+                        icon: 'homepage',
+                        icon1: 'homepage_pitch',
+                        // 菜单中文名
+                        name: '主页1'
+                    },
+                    {
+                        // 图标
+                        icon: 'daily',
+                        // 菜单中文名
+                        name: '日常管理1',
+                        // 子菜单是否展开
+                        open: false,
+                        // 子菜单
+                        children: [
+                            {
+                                name1: '团购管理',
+                                // 子菜单是否选中
+                                selection1: false
+                            }
+                        ]
+                    },
+                    {
+                        // 图标
+                        icon: 'homepage',
+                        icon1: 'homepage_pitch',
+                        // 菜单中文名
+                        name: '主页'
                         //菜单是否选中
-                        selection: false,
+                    },
+                    {
+                        // 图标
+                        icon: 'daily',
+                        // 菜单中文名
+                        name: '日常管理',
+                        // 子菜单是否展开
+                        open: false,
+                        // 子菜单
+                        children: [
+                            {
+                                name1: '团购管理',
+                                // 子菜单是否选中
+                                selection1: false
+                            }
+                        ]
+                    },
+                    {
+                        // 图标
+                        icon: 'homepage',
+                        icon1: 'homepage_pitch',
+                        // 菜单中文名
+                        name: '主页1'
+                    },
+                    {
+                        // 图标
+                        icon: 'daily',
+                        // 菜单中文名
+                        name: '日常管理1',
+                        // 子菜单是否展开
+                        open: false,
+                        // 子菜单
+                        children: [
+                            {
+                                name1: '团购管理',
+                                // 子菜单是否选中
+                                selection1: false
+                            }
+                        ]
+                    },
+                    {
+                        // 图标
+                        icon: 'homepage',
+                        icon1: 'homepage_pitch',
+                        // 菜单中文名
+                        name: '主页'
+                        //菜单是否选中
+                    },
+                    {
+                        // 图标
+                        icon: 'daily',
+                        // 菜单中文名
+                        name: '日常管理',
+                        // 子菜单是否展开
+                        open: false,
+                        // 子菜单
+                        children: [
+                            {
+                                name1: '团购管理',
+                                // 子菜单是否选中
+                                selection1: false
+                            }
+                        ]
+                    },
+                    {
+                        // 图标
+                        icon: 'homepage',
+                        icon1: 'homepage_pitch',
+                        // 菜单中文名
+                        name: '主页1'
+                    },
+                    {
+                        // 图标
+                        icon: 'daily',
+                        // 菜单中文名
+                        name: '日常管理1',
                         // 子菜单是否展开
                         open: false,
                         // 子菜单
@@ -79,46 +195,61 @@
                             }
                         ]
                     }
-                ]
+                ],
+                tableData: [
+                    {
+                        sn: '1',
+                        price: '100'
+                    },
+                    {
+                        sn: '2',
+                        price: '200'
+                    }
+                ],
+                currPage: 1
             }
         },
         methods: {
-            sidebar_menuFun(i) {
-                // i.selection = true
-                // if (i.icon === 'homepage') {
-                //     this.$router.push('/index/index1')
-                // }
+            nextPage() {
+                this.currPage++
+                this.tableData = [
+                    {
+                        sn: '3',
+                        price: '300'
+                    },
+                    {
+                        sn: '4',
+                        price: '400'
+                    }
+                ]
+            },
+            sidebar_menuFun(i, index) {
                 if (i.children) {
                     i.open = !i.open
                 } else {
-                    this.sidebar.map(val => {
-                        val.selection = false
-                    })
-                    i.selection = true
-                    //  其他同级的子元素不被选中
-                    this.sidebar.map(val => {
-                        if (val.children) {
-                            val.children.map(val1 => {
-                                val1.selection1 = false
-                            })
-                            val.open = false
-                        }
-                    })
+                    this.childrenFun(null, index)
+                    // this.currIndex = index
+                    // this.sidebar.map(val => {
+                    //     if (val.children) {
+                    //         val.open = false
+                    //         val.children.map(c => {
+                    //             c.selection1 = false
+                    //         })
+                    //     }
+                    // })
                 }
-                // if (!i.children) {
-                //     i.selection = true
-                // } else {
-                //     i.open = !i.open
-                //     i.children.map(val1 => {
-                //         val1.selection1 = false
-                //     })
-                // }
             },
-            childrenFun(h) {
-                h.selection1 = true
-                this.sidebar.map(val => {
-                    val.selection = false
+            childrenFun(h, index) {
+                this.currIndex = index
+                this.sidebar.forEach((val, _index) => {
+                    if (val.children) {
+                        if (index !== _index) val.open = false
+                        val.children.map(c => {
+                            c.selection1 = false
+                        })
+                    }
                 })
+                if (h) h.selection1 = true
             }
         }
     }
@@ -192,6 +323,12 @@
             height: 100vh;
             background-color: #0a3737;
             user-select: none;
+            overflow: auto;
+            &::-webkit-scrollbar {
+                /*滚动条整体样式*/
+                width: 0px; /*高宽分别对应横竖滚动条的尺寸*/
+                height: 0px;
+            }
             .sidebar_bg {
                 .sidebar_menu {
                     display: flex;
@@ -214,9 +351,6 @@
                             font-size: 1.04vw;
                             font-weight: 800;
                         }
-                        .sidebar_title1 {
-                            color: #0e4b4a;
-                        }
                     }
                     .sidebar_icon {
                         width: 1.09vw;
@@ -226,6 +360,11 @@
                 }
                 .sidebar_menu1 {
                     background-color: #f6c9a8;
+                    .sidebar_left {
+                        .sidebar_title {
+                            color: #0e4b4a;
+                        }
+                    }
                 }
                 .sublist {
                     width: 13.18vw;
@@ -240,19 +379,19 @@
                         border-radius: 0.156vw;
                         margin: 0 0.88vw 0 2.45vw;
                     }
-                    .sublist_spot1 {
-                        background-color: #0e4b4a;
-                    }
                     .sublist_name {
                         color: #8a7a60;
                         font-weight: 700;
                     }
-                    .sublist_name1 {
-                        color: #0e4b4a;
-                    }
                 }
                 .sublist1 {
                     background-color: #f4caa3;
+                    .sublist_spot {
+                        background-color: #0e4b4a;
+                    }
+                    .sublist_name1 {
+                        color: #0e4b4a;
+                    }
                 }
             }
         }
