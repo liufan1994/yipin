@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-13 22:13:41
+ * @Last Modified time: 2018-12-14 23:04:09
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -26,12 +26,18 @@
         </div>
         <div class="sidebar">
             <div class="sidebar_bg" v-for="i in sidebar" :key="i.icon">
-                <div class="sidebar_left">
-                    <img class="sidebar_img" :src="require('../assets/images/'+i.icon+'.png')" alt="icon">
-                    <div class="sidebar_title">{{i.name}}</div>
+                <div class="sidebar_menu" @click="sidebar_menuFun(i)" :class="{sidebar_menu1:i.selection}">
+                    <div class="sidebar_left">
+                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon+'.png')" alt="icon" :class="{sidebar_img1:i.selection}">
+                        <div class="sidebar_title" :class="{sidebar_title1:i.selection}">{{i.name}}</div>
+                    </div>
+                    <img class="sidebar_icon" v-if="i.open&&i.children" src="../assets/images/jianIcon.png" alt="icon">
+                    <img class="sidebar_icon" v-else-if="i.children" src="../assets/images/addIcon.png" alt="icon">
                 </div>
-                <img v-if="i.open" src="../assets/images/jianIcon.png" alt="icon">
-                <img v-else-if="i.children" src="../assets/images/addIcon.png" alt="icon">
+                <div class="sublist" v-for="h in i.children" :key="h.name" v-if="i.open" @click="childrenFun(h)" :class="{sublist1:h.selection1}">
+                    <div class="sublist_spot" :class="{sublist_spot1:h.selection1}"></div>
+                    <div class="sublist_name" :class="{sublist_name1:h.selection1}"> {{h.name1}} </div>
+                </div>
             </div>
         </div>
         <router-view class="routerView"></router-view>
@@ -49,23 +55,51 @@
                         // 图标
                         icon: 'homepage',
                         // 菜单中文名
-                        name: '主页'
+                        name: '主页',
+                        //菜单是否选中
+                        selection: true
                     },
                     {
                         // 图标
                         icon: 'daily',
                         // 菜单中文名
                         name: '日常管理',
+                        //菜单是否选中
+                        selection: false,
                         // 子菜单是否展开
                         open: false,
                         // 子菜单
                         children: [
                             {
-                                name: '团购管理'
+                                name1: '团购管理',
+                                // 子菜单是否选中
+                                selection1: false
                             }
                         ]
                     }
                 ]
+            }
+        },
+        methods: {
+            sidebar_menuFun(i) {
+                this.sidebar.map(val => {
+                    val.selection = false
+                })
+                i.selection = true
+                if (i.icon === 'homepage') {
+                    this.$router.push('/index/index1')
+                }
+                // if (!i.children) {
+                //     i.selection = true
+                // } else {
+                //     i.open = !i.open
+                //     i.children.map(val1 => {
+                //         val1.selection1 = false
+                //     })
+                // }
+            },
+            childrenFun(h) {
+                h.selection1 = !h.selection1
             }
         }
     }
@@ -141,27 +175,85 @@
             width: 13.18vw;
             height: 100vh;
             background-color: #0a3737;
+            user-select: none;
             .sidebar_bg {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                width: 13.18vw;
-                height: 5.57vw;
-                background-color: #0e4b4a;
-                margin-bottom: 0.1vw;
-                .sidebar_left {
+                .sidebar_menu {
                     display: flex;
-                    .sidebar_img {
-                        width: 1.25vw;
-                        height: 1.25vw;
-                        margin: 0 0.52vw 0 2.08vw;
+                    justify-content: space-between;
+                    align-items: center;
+                    width: 13.18vw;
+                    height: 5.57vw;
+                    background-color: #0e4b4a;
+                    margin-bottom: 0.1vw;
+                    .sidebar_left {
+                        display: flex;
+                        align-items: center;
+                        .sidebar_img {
+                            width: 1.25vw;
+                            height: 1.25vw;
+                            margin: 0 0.52vw 0 2.08vw;
+                        }
+                        .sidebar_title {
+                            color: #f6c9a8;
+                            font-size: 1.04vw;
+                            font-weight: 800;
+                        }
+                        .sidebar_title1 {
+                            color: #0e4b4a;
+                        }
                     }
+                    .sidebar_icon {
+                        width: 1.09vw;
+                        height: 1.09vw;
+                        margin-right: 1.3vw;
+                    }
+                }
+                .sidebar_menu1 {
+                    background-color: #f6c9a8;
+                    .sidebar_img1 {
+                        color: #0e4b4a;
+                        mix-blend-mode: color;
+                        // background-image: url(../assets/image/homepage_pitch.png);
+                    }
+                }
+                .sublist {
+                    width: 13.18vw;
+                    height: 2.92vw;
+                    display: flex;
+                    align-items: center;
+                    margin: 0.156vw 0;
+                    .sublist_spot {
+                        width: 0.57vw;
+                        height: 0.57vw;
+                        background-color: #8a7a60;
+                        border-radius: 0.156vw;
+                        margin: 0 0.88vw 0 2.45vw;
+                    }
+                    .sublist_spot1 {
+                        background-color: #0e4b4a;
+                    }
+                    .sublist_name {
+                        color: #8a7a60;
+                        font-weight: 700;
+                    }
+                    .sublist_name1 {
+                        color: #0e4b4a;
+                    }
+                }
+                .sublist1 {
+                    background-color: #f4caa3;
                 }
             }
         }
         .routerView {
-            margin-top: 6vw;
-            margin-left: 13.5vw;
+            width: 84vw;
+            height: 100vh;
+            background-color: #fff;
+            border-top: 6.98vw solid #f0f0f0;
+            border-right: 1.4vw solid #f0f0f0;
+            border-bottom: 1.4vw solid #f0f0f0;
+            border-left: 14.6vw solid #f0f0f0;
+            // margin: 6.98vw 1.4vw 1.4vw 14.6vw;
         }
     }
 </style>

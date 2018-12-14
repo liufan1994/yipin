@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-12 14:32:27
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-13 22:40:07
+ * @Last Modified time: 2018-12-14 18:36:28
  * @文件说明:登录页面
  */
 <template>
@@ -185,6 +185,7 @@
             box-shadow: 0px 7px 27px 0px rgba(0, 0, 0, 0.2);
             margin: 1.4vw 0;
             cursor: pointer;
+            user-select: none;
         }
         .line {
             width: 20.83vw;
