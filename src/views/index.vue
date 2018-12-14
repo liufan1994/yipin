@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-14 23:04:09
+ * @Last Modified time: 2018-12-15 00:28:29
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -28,7 +28,8 @@
             <div class="sidebar_bg" v-for="i in sidebar" :key="i.icon">
                 <div class="sidebar_menu" @click="sidebar_menuFun(i)" :class="{sidebar_menu1:i.selection}">
                     <div class="sidebar_left">
-                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon+'.png')" alt="icon" :class="{sidebar_img1:i.selection}">
+                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon+'.png')" alt="icon" v-if="!i.selection">
+                        <img class="sidebar_img" :src="require('../assets/images/'+i.icon1+'.png')" alt="icon" v-if="i.selection">
                         <div class="sidebar_title" :class="{sidebar_title1:i.selection}">{{i.name}}</div>
                     </div>
                     <img class="sidebar_icon" v-if="i.open&&i.children" src="../assets/images/jianIcon.png" alt="icon">
@@ -54,6 +55,7 @@
                     {
                         // 图标
                         icon: 'homepage',
+                        icon1: 'homepage_pitch',
                         // 菜单中文名
                         name: '主页',
                         //菜单是否选中
@@ -82,12 +84,26 @@
         },
         methods: {
             sidebar_menuFun(i) {
-                this.sidebar.map(val => {
-                    val.selection = false
-                })
-                i.selection = true
-                if (i.icon === 'homepage') {
-                    this.$router.push('/index/index1')
+                // i.selection = true
+                // if (i.icon === 'homepage') {
+                //     this.$router.push('/index/index1')
+                // }
+                if (i.children) {
+                    i.open = !i.open
+                } else {
+                    this.sidebar.map(val => {
+                        val.selection = false
+                    })
+                    i.selection = true
+                    //  其他同级的子元素不被选中
+                    this.sidebar.map(val => {
+                        if (val.children) {
+                            val.children.map(val1 => {
+                                val1.selection1 = false
+                            })
+                            val.open = false
+                        }
+                    })
                 }
                 // if (!i.children) {
                 //     i.selection = true
@@ -99,16 +115,16 @@
                 // }
             },
             childrenFun(h) {
-                h.selection1 = !h.selection1
+                h.selection1 = true
+                this.sidebar.map(val => {
+                    val.selection = false
+                })
             }
         }
     }
 </script>
 <style lang="scss" scoped>
     .index {
-        width: 100vw;
-        height: 100vh;
-        background-color: #f0f0f0;
         .top {
             position: fixed;
             top: 0;
@@ -210,11 +226,6 @@
                 }
                 .sidebar_menu1 {
                     background-color: #f6c9a8;
-                    .sidebar_img1 {
-                        color: #0e4b4a;
-                        mix-blend-mode: color;
-                        // background-image: url(../assets/image/homepage_pitch.png);
-                    }
                 }
                 .sublist {
                     width: 13.18vw;
@@ -246,14 +257,10 @@
             }
         }
         .routerView {
-            width: 84vw;
-            height: 100vh;
-            background-color: #fff;
-            border-top: 6.98vw solid #f0f0f0;
-            border-right: 1.4vw solid #f0f0f0;
-            border-bottom: 1.4vw solid #f0f0f0;
-            border-left: 14.6vw solid #f0f0f0;
-            // margin: 6.98vw 1.4vw 1.4vw 14.6vw;
+            min-height: calc(100vh - 6.97vw);
+            background-color: #f0f0f0;
+            padding-top: 6.97vw;
+            padding-left: 14.6vw;
         }
     }
 </style>
