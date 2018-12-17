@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-15 01:15:45
+ * @Last Modified time: 2018-12-17 21:34:43
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -43,7 +43,12 @@
                 </template>
             </div>
         </div>
-        <router-view class="routerView"></router-view>
+        <!-- bnvnb -->
+        <div class="routerPublic">
+            <div v-if="$route.path==='/index/index1'"></div>
+            <div v-else></div>
+            <router-view></router-view>
+        </div>
     </div>
 </template>
 <script>
@@ -59,8 +64,9 @@
                         icon: 'homepage',
                         icon1: 'homepage_pitch',
                         // 菜单中文名
-                        name: '主页'
+                        name: '主页',
                         //菜单是否选中
+                        routerA: '/index/index1'
                     },
                     {
                         // 图标
@@ -75,123 +81,12 @@
                                 name1: '团购管理',
                                 // 子菜单是否选中
                                 selection1: false
-                            }
-                        ]
-                    },
-                    {
-                        // 图标
-                        icon: 'homepage',
-                        icon1: 'homepage_pitch',
-                        // 菜单中文名
-                        name: '主页1'
-                    },
-                    {
-                        // 图标
-                        icon: 'daily',
-                        // 菜单中文名
-                        name: '日常管理1',
-                        // 子菜单是否展开
-                        open: false,
-                        // 子菜单
-                        children: [
+                            },
                             {
-                                name1: '团购管理',
+                                name1: '团购订单',
                                 // 子菜单是否选中
-                                selection1: false
-                            }
-                        ]
-                    },
-                    {
-                        // 图标
-                        icon: 'homepage',
-                        icon1: 'homepage_pitch',
-                        // 菜单中文名
-                        name: '主页'
-                        //菜单是否选中
-                    },
-                    {
-                        // 图标
-                        icon: 'daily',
-                        // 菜单中文名
-                        name: '日常管理',
-                        // 子菜单是否展开
-                        open: false,
-                        // 子菜单
-                        children: [
-                            {
-                                name1: '团购管理',
-                                // 子菜单是否选中
-                                selection1: false
-                            }
-                        ]
-                    },
-                    {
-                        // 图标
-                        icon: 'homepage',
-                        icon1: 'homepage_pitch',
-                        // 菜单中文名
-                        name: '主页1'
-                    },
-                    {
-                        // 图标
-                        icon: 'daily',
-                        // 菜单中文名
-                        name: '日常管理1',
-                        // 子菜单是否展开
-                        open: false,
-                        // 子菜单
-                        children: [
-                            {
-                                name1: '团购管理',
-                                // 子菜单是否选中
-                                selection1: false
-                            }
-                        ]
-                    },
-                    {
-                        // 图标
-                        icon: 'homepage',
-                        icon1: 'homepage_pitch',
-                        // 菜单中文名
-                        name: '主页'
-                        //菜单是否选中
-                    },
-                    {
-                        // 图标
-                        icon: 'daily',
-                        // 菜单中文名
-                        name: '日常管理',
-                        // 子菜单是否展开
-                        open: false,
-                        // 子菜单
-                        children: [
-                            {
-                                name1: '团购管理',
-                                // 子菜单是否选中
-                                selection1: false
-                            }
-                        ]
-                    },
-                    {
-                        // 图标
-                        icon: 'homepage',
-                        icon1: 'homepage_pitch',
-                        // 菜单中文名
-                        name: '主页1'
-                    },
-                    {
-                        // 图标
-                        icon: 'daily',
-                        // 菜单中文名
-                        name: '日常管理1',
-                        // 子菜单是否展开
-                        open: false,
-                        // 子菜单
-                        children: [
-                            {
-                                name1: '团购管理',
-                                // 子菜单是否选中
-                                selection1: false
+                                selection1: false,
+                                routerA: '/index/groupOrder'
                             }
                         ]
                     }
@@ -228,15 +123,9 @@
                     i.open = !i.open
                 } else {
                     this.childrenFun(null, index)
-                    // this.currIndex = index
-                    // this.sidebar.map(val => {
-                    //     if (val.children) {
-                    //         val.open = false
-                    //         val.children.map(c => {
-                    //             c.selection1 = false
-                    //         })
-                    //     }
-                    // })
+                }
+                if (i.routerA) {
+                    this.$router.push(i.routerA)
                 }
             },
             childrenFun(h, index) {
@@ -250,6 +139,7 @@
                     }
                 })
                 if (h) h.selection1 = true
+                if (h) this.$router.push(h.routerA)
             }
         }
     }
@@ -389,17 +279,18 @@
                     .sublist_spot {
                         background-color: #0e4b4a;
                     }
-                    .sublist_name1 {
+                    .sublist_name {
                         color: #0e4b4a;
                     }
                 }
             }
         }
-        .routerView {
+        .routerPublic {
             min-height: calc(100vh - 6.97vw);
             background-color: #f0f0f0;
             padding-top: 6.97vw;
             padding-left: 14.6vw;
+            padding-bottom: 1.4vw;
         }
     }
 </style>
