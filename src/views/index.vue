@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-17 21:34:43
+ * @Last Modified time: 2018-12-18 17:43:31
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -80,7 +80,8 @@
                             {
                                 name1: '团购管理',
                                 // 子菜单是否选中
-                                selection1: false
+                                selection1: false,
+                                routerA: '/index/groupManagement'
                             },
                             {
                                 name1: '团购订单',
@@ -164,7 +165,6 @@
                 .name_title {
                     font-size: 2.08vw;
                     color: #e6be96;
-                    // font-family: 'FZLTHK--GBK1-0';
                 }
             }
             .private {

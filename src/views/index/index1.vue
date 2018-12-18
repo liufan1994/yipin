@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 22:07:06
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-17 21:37:38
+ * @Last Modified time: 2018-12-18 23:37:32
  * @文件说明: 主页页面
  */
 <template>
@@ -50,6 +50,7 @@
                     <p class="data_top_bottom_text">1个月</p>
                 </div>
             </div>
+            <div id="myChart" :style="{ height: '300px'}"></div>
         </div>
         <div class="notice">
             <div class="notice_title">
@@ -91,15 +92,128 @@
                         time: '2017-09-29'
                     },
                     {
+                        name: '关于整治商场内餐厨垃圾堆放的通知',
+                        time: '2017-10-12'
+                    },
+                    {
+                        name: '关于开展10月1日国庆一品CG店庆活动的通知',
+                        time: '2017-10-10'
+                    },
+                    {
+                        name:
+                            '关于开展10月1日国庆一品CG店庆活动的通知关于开展10月1日国庆一品CG店庆活动的通知',
+                        time: '2017-10-14'
+                    },
+                    {
                         name: '关于商户迎接环保局检查的通知',
                         time: '2017-09-29'
+                    },
+                    {
+                        name: '关于整治商场内餐厨垃圾堆放的通知',
+                        time: '2017-10-12'
+                    },
+                    {
+                        name: '关于开展10月1日国庆一品CG店庆活动的通知',
+                        time: '2017-10-10'
+                    },
+                    {
+                        name: '关于整治商场内餐厨垃圾堆放的通知',
+                        time: '2017-10-12'
+                    },
+                    {
+                        name: '关于开展10月1日国庆一品CG店庆活动的通知',
+                        time: '2017-10-10'
                     }
                 ]
             }
         },
-        methods: {},
         created() {
             console.log(this.$route)
+        },
+        mounted() {
+            this.drawLine()
+        },
+        methods: {
+            drawLine() {
+                // 基于准备好的dom，初始化echarts实例
+                let myChart = this.$echarts.init(document.getElementById('myChart'))
+                // 绘制图表
+                myChart.setOption({
+                    title: {
+                        text: '某楼盘销售情况',
+                        subtext: '纯属虚构'
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        data: ['意向', '预购', '成交']
+                    },
+                    toolbox: {
+                        show: true,
+                        feature: {
+                            mark: { show: true },
+                            dataView: { show: true, readOnly: false },
+                            magicType: {
+                                show: true,
+                                type: ['line', 'bar', 'stack', 'tiled']
+                            },
+                            restore: { show: true },
+                            saveAsImage: { show: true }
+                        }
+                    },
+                    calculable: true,
+                    xAxis: [
+                        {
+                            type: 'category',
+                            boundaryGap: false,
+                            data: [
+                                '周一',
+                                '周二',
+                                '周三',
+                                '周四',
+                                '周五',
+                                '周六',
+                                '周日'
+                            ]
+                        }
+                    ],
+                    yAxis: [
+                        {
+                            type: 'value'
+                        }
+                    ],
+                    series: [
+                        {
+                            name: '成交',
+                            type: 'line',
+                            smooth: true,
+                            itemStyle: {
+                                normal: { areaStyle: { type: 'default' } }
+                            },
+                            data: [10, 12, 21, 54, 260, 830, 710]
+                        },
+                        {
+                            name: '预购',
+                            type: 'line',
+                            smooth: true,
+                            itemStyle: {
+                                normal: { areaStyle: { type: 'default' } }
+                            },
+                            data: [30, 182, 434, 791, 390, 30, 10]
+                        },
+                        {
+                            name: '意向',
+                            type: 'line',
+                            smooth: true,
+                            itemStyle: {
+                                normal: { areaStyle: { type: 'default' } }
+                            },
+                            data: [1320, 1132, 601, 234, 120, 90, 20]
+                        }
+                    ]
+                })
+            }
         }
     }
 </script>

@@ -4,7 +4,9 @@ import router from './router'
 import store from './store'
 import tool from './tool'
 import api from './api'
+import echarts from 'echarts'
 
+Vue.prototype.$echarts = echarts
 Vue.use(api)
 Vue.use(tool)
 
