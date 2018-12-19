@@ -2,7 +2,7 @@
  * @Author: hzq
  * @Date: 2018-08-28 17:50:19
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-18 14:13:56
+ * @Last Modified time: 2018-12-19 17:24:08
  * @文件说明: 所有路由处理
  */
 import channel from './channel'
@@ -13,7 +13,12 @@ let all = Object.assign(
             { name: 'login' },
             {
                 name: 'index',
-                children: ['index1', 'groupOrder', 'groupManagement']
+                children: [
+                    'index1',
+                    'groupOrder',
+                    'groupManagement',
+                    'edit_groupManagement'
+                ]
             }
         ]
     },

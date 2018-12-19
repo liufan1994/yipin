@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-18 17:43:31
+ * @Last Modified time: 2018-12-19 17:24:22
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -290,7 +290,7 @@
             background-color: #f0f0f0;
             padding-top: 6.97vw;
             padding-left: 14.6vw;
-            padding-bottom: 1.4vw;
+            // padding-bottom: 1.4vw;
         }
     }
 </style>

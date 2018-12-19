@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 22:07:06
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-18 23:37:32
+ * @Last Modified time: 2018-12-19 22:28:47
  * @文件说明: 主页页面
  */
 <template>
@@ -38,7 +38,7 @@
             </div>
         </div>
         <div class="data">
-            <div class="data_top">
+            <!-- <div class="data_top">
                 <div class="data_top_left">
                     <p class="data_top_left_text">数据统计</p>
                     <img class="data_top_left_img" src="../../assets/images/notice_arrow.png" alt="icon">
@@ -49,16 +49,17 @@
                     <p class="data_top_bottom_text">14天</p>
                     <p class="data_top_bottom_text">1个月</p>
                 </div>
-            </div>
-            <div id="myChart" :style="{ height: '300px'}"></div>
+            </div> -->
+            <div id="myChart" :style="{ height: '23.49vw'}"></div>
         </div>
+        <div v-show="false">12344</div>
         <div class="notice">
             <div class="notice_title">
                 <p class="notice_title_text">系统公告</p>
                 <img class="notice_title_img" src="../../assets/images/notice_arrow.png" alt="icon">
             </div>
             <div class="notice_news">
-                <div class="noticeNew" v-for="i in noticeNews" :key="i.name">
+                <div class="noticeNew" v-for="(i,index) in noticeNews" :key="index">
                     <div class="noticeNew_left">
                         <img class="noticeNew_left_img" src="../../assets/images/notice_horn.png" alt="">
                         <div class="noticeNew_left_text"> {{i.name}}
@@ -141,75 +142,66 @@
                 myChart.setOption({
                     title: {
                         text: '某楼盘销售情况',
-                        subtext: '纯属虚构'
+                        textStyle: {
+                            //文字颜色
+                            color: '#333',
+                            //字体粗细
+                            fontWeight: 700,
+                            //字体大小
+                            fontSize: 20
+                        }
                     },
                     tooltip: {
                         trigger: 'axis'
                     },
                     legend: {
-                        data: ['意向', '预购', '成交']
+                        data: ['意向']
                     },
                     toolbox: {
                         show: true,
                         feature: {
-                            mark: { show: true },
-                            dataView: { show: true, readOnly: false },
-                            magicType: {
-                                show: true,
-                                type: ['line', 'bar', 'stack', 'tiled']
-                            },
-                            restore: { show: true },
-                            saveAsImage: { show: true }
+                            // dataView: { show: true, readOnly: false }
+                            // restore: { show: true },
+                            // saveAsImage: { show: true }
+                        },
+                        iconStyle: {
+                            normal: {
+                                //设置颜色
+                                // color: 'red'
+                            }
                         }
                     },
-                    calculable: true,
+                    // calculable: true,
                     xAxis: [
                         {
-                            type: 'category',
+                            // type: 'category',
                             boundaryGap: false,
                             data: [
-                                '周一',
-                                '周二',
-                                '周三',
-                                '周四',
-                                '周五',
-                                '周六',
-                                '周日'
+                                '2018-10-10',
+                                '2018-10-11',
+                                '2018-10-12',
+                                '2018-10-13',
+                                '2018-10-14',
+                                '2018-10-15',
+                                '2018-10-16'
                             ]
                         }
                     ],
                     yAxis: [
                         {
-                            type: 'value'
+                            // type: 'value'
                         }
                     ],
                     series: [
                         {
-                            name: '成交',
-                            type: 'line',
-                            smooth: true,
-                            itemStyle: {
-                                normal: { areaStyle: { type: 'default' } }
-                            },
-                            data: [10, 12, 21, 54, 260, 830, 710]
-                        },
-                        {
-                            name: '预购',
-                            type: 'line',
-                            smooth: true,
-                            itemStyle: {
-                                normal: { areaStyle: { type: 'default' } }
-                            },
-                            data: [30, 182, 434, 791, 390, 30, 10]
-                        },
-                        {
                             name: '意向',
                             type: 'line',
+                            color: 'rgba(14, 75, 74, 0.6)',
                             smooth: true,
                             itemStyle: {
                                 normal: { areaStyle: { type: 'default' } }
                             },
-                            data: [1320, 1132, 601, 234, 120, 90, 20]
+                            data: [256, 612, 746, 836, 1058, 1367, 888]
                         }
                     ]
                 })

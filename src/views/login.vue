@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-12 14:32:27
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-18 17:35:49
+ * @Last Modified time: 2018-12-19 22:37:19
  * @文件说明:登录页面
  */
 <template>
@@ -66,7 +66,7 @@
                 this.automatic1 = !this.automatic1
             },
             buttonFun() {
-                this.$router.push('/index')
+                this.$router.push('/index/index1')
             }
         }
     }
@@ -113,6 +113,7 @@
                     margin: 0 0.68vw;
                 }
                 input {
+                    width: 100%;
                     border: none;
                     outline: none;
                     &::-webkit-input-placeholder {
@@ -123,7 +124,6 @@
             }
         }
         .input_bg1 {
-            display: flex;
             justify-content: space-between;
             .input_left {
                 display: flex;

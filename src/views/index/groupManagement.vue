@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-18 14:07:07
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-18 22:52:45
+ * @Last Modified time: 2018-12-19 22:22:02
  * @文件说明: 团购管理
  */
 <template>
@@ -43,7 +43,7 @@
                         </div>
                         <div class="list_list_content2" :style="{width:titles[3].styleA}">{{h.time}}</div>
                         <div class="created_operation" :style="{width:titles[4].styleA}">
-                            <div class="created_operation_">
+                            <div class="created_operation_" @click="editFun">
                                 <img class="created_operation_img" src="../../assets/images/edit.png" alt="icon">
                                 <p class="created_operation_edit_text">编辑</p>
                             </div>
@@ -68,13 +68,14 @@
                     </div>
                 </div>
                 <div class="page_right">
-                    <p class="page_text">共{{totalPage}}页/{{}}条，每页显示10条，到第</p>
+                    <p class="page_text">共{{totalPage}}页/{{oldContents.length}}条，每页显示{{eachPage}}条，到第</p>
                     <input class="page_input" type="number" v-model="newNumber">
                     <p class="page_text">页</p>
                     <p class="page_bottom" @click="page_bottomFun">确认</p>
                 </div>
             </div>
         </div>
+        <div class="blank"></div>
     </div>
 
 </template>
@@ -84,9 +85,10 @@
         name: 'groupManagement',
         data() {
             return {
-                newNumber: '',
+                searchVal: '',
+                newNumber: 0,
                 currPage: 1,
-                totalPage: 5,
+                eachPage: 1,
                 titles: [
                     {
                         name: '团购名称',
@@ -109,6 +111,7 @@
                         styleA: '18.92vw'
                     }
                 ],
+                pageObj: {},
                 contents: [],
                 oldContents: [
                     {
@@ -170,12 +173,46 @@
                         price: '￥88.0',
                         state2: '进行中',
                         time: '2017-10-20 至 2017-10-30'
+                    },
+                    {
+                        name: '黄焖鸡米饭单人套餐',
+                        price: '￥28.0',
+                        state2: '进行中',
+                        time: '2017-10-20 至 2017-10-30'
+                    },
+                    {
+                        name: '黄焖鸡米饭单人套餐',
+                        price: '￥30.0',
+                        state1: '未开始',
+                        time: '2017-10-20 至 2017-10-30'
+                    },
+                    {
+                        name: '黄焖鸡米饭套餐',
+                        price: '￥66.0',
+                        state1: '未开始',
+                        time: '2017-10-20 至 2017-10-30'
+                    },
+                    {
+                        name: '黄焖鸡米饭八人套餐',
+                        price: '￥128.0',
+                        state1: '未开始',
+                        time: '2017-10-20 至 2017-10-30'
+                    },
+                    {
+                        name: '黄焖鸡米饭四人套餐',
+                        price: '￥88.0',
+                        state2: '进行中',
+                        time: '2017-10-20 至 2017-10-30'
                     }
-                ],
-                pageObj: {}
+                ]
             }
         },
         methods: {
+            //编辑事件
+            editFun() {
+                this.$router.push('/index/edit_groupManagement')
+            },
+            //点击页数事件
             pageClick(page) {
                 this.currPage = page
             },
@@ -190,6 +227,7 @@
                         ? this.currPage + 1
                         : this.totalPage
             },
+            //页数确认事件
             page_bottomFun() {
                 if (this.newNumber > this.totalPage) {
                     this.newNumber = this.totalPage
@@ -198,6 +236,7 @@
                 }
                 this.currPage = this.newNumber
             },
+            //搜索事件
             searchFun() {
                 let arr = []
                 this.oldContents.map(val => {
@@ -209,8 +248,17 @@
                 this.contents = arr
             }
         },
-        created() {
-            this.contents = this.oldContents
+        computed: {
+            totalPage() {
+                let a = Math.ceil(this.oldContents.length / this.eachPage)
+                return a
+            }
+        },
+        mounted() {
+            let a = document.body.clientHeight - 0.219 * document.body.clientWidth
+            let b = Math.trunc(a / (0.0276 * document.body.clientWidth))
+            this.contents = this.oldContents.slice(0, b)
+            this.eachPage = b
         }
     }
 </script>
@@ -309,7 +357,7 @@
                 }
             }
             .list_list {
-                height: 31.1vw;
+                min-height: calc(100vh - 18.89vw);
                 background-color: #fafafa;
                 .list_list_title {
                     display: flex;
@@ -451,6 +499,10 @@
                     }
                 }
             }
+        }
+        .blank {
+            height: 1.4vw;
+            background-color: #f0f0f0;
         }
     }
 </style>
