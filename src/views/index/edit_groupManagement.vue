@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-19 17:20:31
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 21:27:02
+ * @Last Modified time: 2018-12-20 11:48:44
  * @文件说明:团购管理_设置
  */
 <template>
@@ -18,31 +18,45 @@
             <div class="edit_content">
                 <div class="edit_content_">
                     <div class="edit_content_name">
-                        <div class="edit_content_title"></div>
+                        <div class="edit_content_title">团购名称</div>
+                        <div class="edit_content_content">
+                            <input class="edit_content_content_input" type="text">
+                        </div>
+                    </div>
+                    <div class="edit_content_name">
+                        <div class="edit_content_title">价格</div>
+                        <div class="edit_content_content">
+                            <input class="edit_content_content_input" type="number">
+                        </div>
+                    </div>
+                    <div class="edit_content_name">
+                        <div class="edit_content_title">有效期</div>
+                        <div class="edit_content_content">
+                            <div class="block">
+                                <el-date-picker v-model="value1" type="date" placeholder="开始时间">
+                                </el-date-picker>
+                            </div>
+                            <p>~</p>
+                            <div class="block">
+                                <el-date-picker v-model="value1" type="date" placeholder="结束时间">
+                                </el-date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="edit_content_name">
+                        <div class="edit_content_title">每人限购次数</div>
                         <div class="edit_content_content"></div>
                     </div>
-                    <div class="edit_content_price">
-                        <div class="edit_content_title"></div>
+                    <div class="edit_content_name">
+                        <div class="edit_content_title">市场价</div>
                         <div class="edit_content_content"></div>
                     </div>
-                    <div class="edit_content_time">
-                        <div class="edit_content_title"></div>
+                    <div class="edit_content_name">
+                        <div class="edit_content_title">优惠券购买</div>
                         <div class="edit_content_content"></div>
                     </div>
-                    <div class="edit_content_degree">
-                        <div class="edit_content_title"></div>
-                        <div class="edit_content_content"></div>
-                    </div>
-                    <div class="edit_content_value">
-                        <div class="edit_content_title"></div>
-                        <div class="edit_content_content"></div>
-                    </div>
-                    <div class="edit_content_buy">
-                        <div class="edit_content_title"></div>
-                        <div class="edit_content_content"></div>
-                    </div>
-                    <div class="edit_content_give">
-                        <div class="edit_content_title"></div>
+                    <div class="edit_content_name">
+                        <div class="edit_content_title">赠送优惠券</div>
                         <div class="edit_content_content"></div>
                     </div>
                 </div>
@@ -52,7 +66,46 @@
 </template>
 <script>
     export default {
-        name: 'edit_groupManagement'
+        name: 'edit_groupManagement',
+        data() {
+            return {
+                pickerOptions1: {
+                    disabledDate(time) {
+                        return time.getTime() > Date.now()
+                    },
+                    shortcuts: [
+                        {
+                            text: '今天',
+                            onClick(picker) {
+                                picker.$emit('pick', new Date())
+                            }
+                        },
+                        {
+                            text: '昨天',
+                            onClick(picker) {
+                                const date = new Date()
+                                date.setTime(date.getTime() - 3600 * 1000 * 24)
+                                picker.$emit('pick', date)
+                            }
+                        },
+                        {
+                            text: '一周前',
+                            onClick(picker) {
+                                const date = new Date()
+                                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
+                                picker.$emit('pick', date)
+                            }
+                        }
+                    ]
+                },
+                value1: ''
+                // value2: ''
+            }
+        },
+        created() {
+            this.$getItem('editObj')
+            // console.log(JSON.parse(sessionStorage.getItem('editObj')))
+        }
     }
 </script>
 <style lang="scss" scoped>
@@ -93,11 +146,34 @@
                 }
             }
             .edit_content {
+                margin: 2.08vw;
                 .edit_content_ {
                     .edit_content_name {
+                        display: flex;
+                        align-items: center;
                         margin-bottom: 0.42vw;
                         .edit_content_title {
                             width: 6.77vw;
+                            text-align: right;
+                            margin-right: 1.3vw;
+                        }
+                        .edit_content_content {
+                            display: flex;
+                            align-items: center;
+                            width: 36.25vw;
+                            .edit_content_content_input {
+                                width: 34.45vw;
+                                height: 3.33vw;
+                                border: 1px solid #e6e6e6;
+                                border-radius: 0.21vw;
+                                outline: none;
+                                padding: 0 0.9vw;
+                            }
+                            // .block {
+                            .el-input--prefix .el-input__inner {
+                                height: 3.33vw;
+                            }
+                            // }
                         }
                     }
                 }

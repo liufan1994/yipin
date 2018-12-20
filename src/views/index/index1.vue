@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 22:07:06
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 22:28:47
+ * @Last Modified time: 2018-12-20 09:23:35
  * @文件说明: 主页页面
  */
 <template>
@@ -10,7 +10,7 @@
         <div class="count">
             <div class="count1">
                 <div class="count1_top">
-                    <img class="count1_top_icon1" src="../../assets/images/order.png" alt="icon">
+                    <img class="count1_top_icon1" src="../../assets/images/today.png" alt="icon">
                     <p class="count1_top_title">今日已完成订单</p>
                 </div>
                 <div class="count1_bottom"> {{order}} </div>

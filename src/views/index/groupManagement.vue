@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-18 14:07:07
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 22:22:02
+ * @Last Modified time: 2018-12-19 23:00:21
  * @文件说明: 团购管理
  */
 <template>
@@ -210,6 +210,8 @@
         methods: {
             //编辑事件
             editFun() {
+                // sessionStorage.setItem('editObj', JSON.stringify({ name: 123 }))
+                this.$setItem('editObj', { name: 123 })
                 this.$router.push('/index/edit_groupManagement')
             },
             //点击页数事件
