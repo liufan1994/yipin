@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-21 18:55:57
+ * @Last Modified time: 2018-12-22 16:41:14
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -87,13 +87,13 @@
                                 // 子菜单是否选中
                                 selection1: false,
                                 routerA: '/index/groupManagement'
-                            },
-                            {
-                                name1: '团购订单',
-                                // 子菜单是否选中
-                                selection1: false,
-                                routerA: '/index/groupOrder'
                             }
+                            // {
+                            //     name1: '团购订单',
+                            //     // 子菜单是否选中
+                            //     selection1: false,
+                            //     routerA: '/index/groupOrder'
+                            // }
                         ]
                     }
                 ],

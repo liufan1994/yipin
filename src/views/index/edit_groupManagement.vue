@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-19 17:20:31
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-21 17:23:58
+ * @Last Modified time: 2018-12-22 16:40:07
  * @文件说明:团购管理_设置
  */
 <template>
@@ -20,25 +20,25 @@
                     <div class="edit_content_name">
                         <div class="edit_content_title">团购名称</div>
                         <div class="edit_content_content">
-                            <input class="edit_content_content_input" type="text" placeholder="请输入团购名称">
+                            <input class="edit_content_content_input" type="text" placeholder="请输入团购名称" v-model="editObj.name">
                         </div>
                     </div>
                     <div class="edit_content_name">
                         <div class="edit_content_title">价格</div>
                         <div class="edit_content_content">
-                            <input class="edit_content_content_input" type="number" placeholder="请输入价格">
+                            <input class="edit_content_content_input" type="text" placeholder="请输入价格" v-model="editObj.price">
                         </div>
                     </div>
                     <div class="edit_content_name1">
                         <div class="edit_content_title">有效期</div>
                         <div class="edit_content_content">
                             <div class="block">
-                                <el-date-picker v-model="value1" type="date" placeholder="开始时间">
+                                <el-date-picker v-model="editObj.time1" type="date" placeholder="开始时间">
                                 </el-date-picker>
                             </div>
                             <p class="block_zhi">~</p>
                             <div class="block">
-                                <el-date-picker v-model="value2" type="date" placeholder="结束时间">
+                                <el-date-picker v-model="editObj.time2" type="date" placeholder="结束时间">
                                 </el-date-picker>
                             </div>
                         </div>
@@ -46,14 +46,14 @@
                     <div class="edit_content_name">
                         <div class="edit_content_title">每人限购次数</div>
                         <div class="edit_content_content">
-                            <div class="restrain" @click="noLimitFun">
-                                <img class="restrain_img" v-if="radioType1" src="../../assets/images/radio.png" alt="icon">
+                            <div class="restrain" @click="radioType = false">
+                                <img class="restrain_img" v-if="radioType" src="../../assets/images/radio.png" alt="icon">
                                 <img class="restrain_img" v-else src="../../assets/images/radio_pitch.png" alt="icon">
                                 <p class="restrain_text">不限购</p>
                             </div>
-                            <div class="restrain" @click="restrainFun">
-                                <img class="restrain_img" v-if="radioType" src="../../assets/images/radio.png" alt="icon">
-                                <img class="restrain_img" v-else src="../../assets/images/radio_pitch.png" alt="icon">
+                            <div class="restrain" @click="radioType = true">
+                                <img class="restrain_img" v-if="radioType" src="../../assets/images/radio_pitch.png" alt="icon">
+                                <img class="restrain_img" v-else src="../../assets/images/radio.png" alt="icon">
                                 <p class="restrain_text">限购</p>
                             </div>
                             <div class="restrain_choice" v-if="!radioType" @click="degreeFun">
@@ -74,19 +74,19 @@
                     <div class="edit_content_name">
                         <div class="edit_content_title">优惠券购买</div>
                         <div class="edit_content_content">
-                            <div class="restrain" @click="noAllowFun">
-                                <img class="restrain_img" v-if="noAllowType" src="../../assets/images/radio.png" alt="icon">
+                            <div class="restrain" @click="allowType=false">
+                                <img class="restrain_img" v-if="allowType" src="../../assets/images/radio.png" alt="icon">
                                 <img class="restrain_img" v-else src="../../assets/images/radio_pitch.png" alt="icon">
                                 <p class="restrain_text">不允许</p>
                             </div>
-                            <div class="restrain" @click="allowFun">
-                                <img class="restrain_img" v-if="allowType" src="../../assets/images/radio.png" alt="icon">
-                                <img class="restrain_img" v-else src="../../assets/images/radio_pitch.png" alt="icon">
+                            <div class="restrain" @click="allowType=true">
+                                <img class="restrain_img" v-if="allowType" src="../../assets/images/radio_pitch.png" alt="icon">
+                                <img class="restrain_img" v-else src="../../assets/images/radio.png" alt="icon">
                                 <p class="restrain_text">允许</p>
                             </div>
                         </div>
                     </div>
-                    <div class="buy_checkbox" v-if="!allowType">
+                    <div class="buy_checkbox" v-if="allowType">
                         <div class="buy_checkbox_" @click="platformFun">
                             <img class="buy_checkbox_img" v-if="platformType" src="../../assets/images/checkbox.png" alt="icon">
                             <img class="buy_checkbox_img" v-else src="../../assets/images/checkbox_pitch.png" alt="icon">
@@ -101,17 +101,17 @@
                     <div class="edit_content_name">
                         <div class="edit_content_title">赠送优惠券</div>
                         <div class="edit_content_content">
-                            <div class="restrain" @click="noGiveFun">
-                                <img class="restrain_img" v-if="noGiveType" src="../../assets/images/radio.png" alt="icon">
+                            <div class="restrain" @click="giveType=false">
+                                <img class="restrain_img" v-if="giveType" src="../../assets/images/radio.png" alt="icon">
                                 <img class="restrain_img" v-else src="../../assets/images/radio_pitch.png" alt="icon">
                                 <p class="restrain_text">不赠送</p>
                             </div>
-                            <div class="restrain" @click="giveFun">
-                                <img class="restrain_img" v-if="giveType" src="../../assets/images/radio.png" alt="icon">
-                                <img class="restrain_img" v-else src="../../assets/images/radio_pitch.png" alt="icon">
+                            <div class="restrain" @click="giveType=true">
+                                <img class="restrain_img" v-if="giveType" src="../../assets/images/radio_pitch.png" alt="icon">
+                                <img class="restrain_img" v-else src="../../assets/images/radio.png" alt="icon">
                                 <p class="restrain_text">赠送</p>
                             </div>
-                            <div class="restrain_choice1" v-if="!giveType" @click="couponFun">
+                            <div class="restrain_choice1" v-if="giveType" @click="couponFun">
                                 <p>选择优惠券</p>
                                 <img class="restrain_choice_img" src="../../assets/images/top_arrow.png" alt="icon" v-if="!couponType">
                                 <img class="restrain_choice_img" src="../../assets/images/top_arrowa.png" alt="icon" v-else>
@@ -142,15 +142,15 @@
                 <div class="line"></div>
                 <div class="imageText">
                     <div class="imageText_title">图文描述</div>
-                    <div class="imageText_richText" ref="editorElem"></div>
+                    <div class="imageText_richText" ref="editorElem1"></div>
                 </div>
                 <div class="line"></div>
                 <div class="imageText">
                     <div class="imageText_title">购买须知</div>
-                    <div class="imageText_richText" ref="editorElem"></div>
+                    <div class="imageText_richText" ref="editorElem2"></div>
                 </div>
                 <div class="line"></div>
-                <div class="release">
+                <div class="release" @click="$router.push('/index/groupManagement')">
                     <img class="release_img" src="../../assets/images/release.png">
                     <p class="release_text">发布</p>
                 </div>
@@ -164,6 +164,8 @@
         name: 'edit_groupManagement',
         data() {
             return {
+                //需要修改的数据
+                editObj: {},
                 coupons: [
                     {
                         pitch: false,
@@ -203,18 +205,14 @@
                     }
                 ],
                 couponType: false,
-                //不赠送优惠券单选|默认未选中
-                noGiveType: true,
-                //赠送优惠券单选|默认选中
-                giveType: false,
+                //是否赠送优惠券|默认赠送
+                giveType: true,
                 //平台通用优惠券复选框默认未选中
                 platformType: true,
                 //商家优惠券复选框默认未选中
                 sellerType: true,
-                //允许购买优惠券|默认选中
-                allowType: false,
-                //不允许购买优惠券|默认未选中
-                noAllowType: true,
+                //是否允许购买优惠券|默认允许
+                allowType: true,
                 // 点击限购次数框是否出现次数下拉框
                 degreeType: false,
                 // 限购次数下拉框
@@ -240,64 +238,39 @@
                         name: '20次'
                     }
                 ],
-                // 限购单选框是否出现
+                // 是否限购|默认限购
                 radioType: false,
-                // 不限购单选框是否出现
-                radioType1: true,
                 // 限购次数框默认次数
-                degreeText: '1次',
-                // 时间段选择
-                pickerOptions1: {
-                    disabledDate(time) {
-                        return time.getTime() > Date.now()
-                    },
-                    shortcuts: [
-                        {
-                            text: '今天',
-                            onClick(picker) {
-                                picker.$emit('pick', new Date())
-                            }
-                        },
-                        {
-                            text: '昨天',
-                            onClick(picker) {
-                                const date = new Date()
-                                date.setTime(date.getTime() - 3600 * 1000 * 24)
-                                picker.$emit('pick', date)
-                            }
-                        },
-                        {
-                            text: '一周前',
-                            onClick(picker) {
-                                const date = new Date()
-                                date.setTime(date.getTime() - 3600 * 1000 * 24 * 7)
-                                picker.$emit('pick', date)
-                            }
-                        }
-                    ]
-                },
-                value1: '',
-                value2: ''
+                degreeText: '1次'
             }
         },
         methods: {
+            /**
+             * post的传参
+             * {
+             *      name:this.editObj.name
+             *      price:this.editObj.price,
+             *      time1:this.editObj.time1,
+             *      time2:this.editObj.time2,
+             *      yhq:1
+             * }
+             *
+             * this.editObj
+             *
+             * {
+             *      ...this.editObj,
+             *      yhq:1,
+             * }
+             * {
+             * get的传参
+             *  parmas:{
+             *      name:'dasd'
+             * }
+             * }
+             */
             //退出事件
             signOutFun() {
                 this.$router.push('/index/groupManagement')
-            },
-            //限购事件
-            restrainFun() {
-                this.radioType = !this.radioType
-                if (!this.radioType) {
-                    this.radioType1 = true
-                }
-            },
-            //不限购事件
-            noLimitFun() {
-                this.radioType1 = !this.radioType1
-                if (!this.radioType1) {
-                    this.radioType = true
-                }
             },
             //点击下拉限购次数事件
             degreeFun() {
@@ -311,20 +284,6 @@
                 i.pitch = true
                 this.degreeText = i.name
             },
-            //不允许购买优惠券事件
-            noAllowFun() {
-                this.noAllowType = !this.noAllowType
-                if (!this.noAllowType) {
-                    this.allowType = true
-                }
-            },
-            //允许购买优惠券事件
-            allowFun() {
-                this.allowType = !this.allowType
-                if (!this.allowType) {
-                    this.noAllowType = true
-                }
-            },
             //平台通用优惠券复选框事件
             platformFun() {
                 this.platformType = !this.platformType
@@ -332,20 +291,6 @@
             //商家优惠券复选框事件
             sellerFun() {
                 this.sellerType = !this.sellerType
-            },
-            //不赠送优惠券单选事件
-            noGiveFun() {
-                this.noGiveType = !this.noGiveType
-                if (!this.noGiveType) {
-                    this.giveType = true
-                }
-            },
-            //赠送优惠券单选事件
-            giveFun() {
-                this.giveType = !this.giveType
-                if (!this.giveType) {
-                    this.noGiveType = true
-                }
             },
             //点击出现优惠券选择框
             couponFun() {
@@ -357,12 +302,14 @@
             }
         },
         created() {
-            this.$getItem('editObj')
+            this.editObj = this.$getItem('editObj')
             // console.log(JSON.parse(sessionStorage.getItem('editObj')))
         },
         mounted() {
-            var editor = new E(this.$refs.editorElem)
-            editor.create()
+            let editor1 = new E(this.$refs.editorElem1)
+            editor1.create()
+            let editor2 = new E(this.$refs.editorElem2)
+            editor2.create()
         }
     }
 </script>
@@ -666,6 +613,8 @@
                     background-color: #0e4b4a;
                     border-radius: 0.42vw;
                     margin-left: 7.3vw;
+                    cursor: pointer;
+                    user-select: none;
                     .release_img {
                         width: 1.51vw;
                         height: 1.51vw;

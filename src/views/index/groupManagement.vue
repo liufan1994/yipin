@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-18 14:07:07
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-21 18:41:55
+ * @Last Modified time: 2018-12-22 15:59:30
  * @文件说明: 团购管理
  */
 <template>
@@ -37,18 +37,16 @@
                     <div class="list_list_title1" v-for="(i,index) in titles" :key="i.name" :style="{width:i.styleA,textIndent:index?'0.8vw':'2.08vw'}">{{i.name}}</div>
                 </div>
                 <div class="list_list_content">
-                    <p class="list_list_content_tips" v-if="tipsType">无数据</p>
+                    <p class="list_list_content_tips" v-if="contents.length===0">无数据</p>
                     <div class="list_list_content1" v-for="h in contents" :key="h.article_id">
                         <div class="list_list_content2" :style="{width:titles[0].styleA}" style="text-indent:2.08vw;">{{h.name}}</div>
-                        <div class="created_price" :style="{width:titles[1].styleA}">{{h.price}}</div>
+                        <div class="created_price" :style="{width:titles[1].styleA}">¥{{(h.price*1).toFixed(1)}}</div>
                         <div class="created_state" :style="{width:titles[2].styleA}">
-                            <p class="created_state1" v-if="h.state1==='未开始'">{{h.state1}}</p>
-                            <p class="created_state2" v-else-if="h.state2==='进行中'">{{h.state2}}</p>
-                            <p class="created_state3" v-else-if="h.state3==='已失效'">{{h.state3}}</p>
+                            <p :class="'created_state'+h.stateCode">{{h.stateName}}</p>
                         </div>
-                        <div class="list_list_content2" :style="{width:titles[3].styleA}">{{h.time}}</div>
+                        <div class="list_list_content2" :style="{width:titles[3].styleA}">{{h.time1}}至{{h.time2}}</div>
                         <div class="created_operation" :style="{width:titles[4].styleA}">
-                            <div class="created_operation_" @click="editFun">
+                            <div class="created_operation_" @click="editFun(h)">
                                 <img class="created_operation_img" src="../../assets/images/edit.png" alt="icon">
                                 <p class="created_operation_edit_text">编辑</p>
                             </div>
@@ -73,7 +71,7 @@
                     </div>
                 </div>
                 <div class="page_right">
-                    <p class="page_text">共{{totalPage}}页/{{contents.length}}条，每页显示{{eachPage}}条，到第</p>
+                    <p class="page_text">共{{totalPage}}页/{{filterContents.length}}条，每页显示{{eachPage}}条，到第</p>
                     <input class="page_input" type="number" v-model="newNumber">
                     <p class="page_text">页</p>
                     <p class="page_bottom" @click="page_bottomFun">确认</p>
@@ -90,7 +88,6 @@
         name: 'groupManagement',
         data() {
             return {
-                tipsType: true,
                 states: [
                     {
                         pitch: true,
@@ -113,7 +110,9 @@
                 stateType: false,
                 searchVal: '',
                 newNumber: 0,
+                //当前页数
                 currPage: 1,
+                //每页条数
                 eachPage: 1,
                 titles: [
                     {
@@ -139,96 +138,128 @@
                 ],
                 pageObj: {},
                 contents: [],
+                filterContents: [],
                 oldContents: [
                     {
                         name: '黄焖鸡米饭单人套餐',
-                        price: '￥30.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '30',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡单人套餐',
-                        price: '￥35.0',
-                        state2: '进行中',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '35',
+                        stateCode: 2,
+                        stateName: '进行中',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭双人套餐',
-                        price: '￥42.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '42',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '米饭单人套餐',
-                        price: '￥34.0',
-                        state3: '已失效',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '34',
+                        stateCode: 3,
+                        stateName: '已失效',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '双人套餐',
-                        price: '￥40.0',
-                        state3: '已失效',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '40',
+
+                        stateCode: 3,
+                        stateName: '已失效',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭单人套餐',
-                        price: '￥28.0',
-                        state2: '进行中',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '28',
+                        stateCode: 3,
+                        stateName: '已失效',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭单人套餐',
-                        price: '￥30.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '30',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭套餐',
-                        price: '￥66.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '66',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭八人套餐',
-                        price: '￥128.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '128',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭四人套餐',
-                        price: '￥88.0',
-                        state2: '进行中',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '88',
+                        stateCode: 2,
+                        stateName: '进行中',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭单人套餐',
-                        price: '￥28.0',
-                        state2: '进行中',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '28',
+                        stateCode: 2,
+                        stateName: '进行中',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭单人套餐',
-                        price: '￥30.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '30',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭套餐',
-                        price: '￥66.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '66',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭八人套餐',
-                        price: '￥128.0',
-                        state1: '未开始',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '128',
+                        stateCode: 1,
+                        stateName: '未开始',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     },
                     {
                         name: '黄焖鸡米饭四人套餐',
-                        price: '￥88.0',
-                        state2: '进行中',
-                        time: '2017-10-20 至 2017-10-30'
+                        price: '88',
+                        stateCode: 2,
+                        stateName: '进行中',
+                        time1: '2017-10-20',
+                        time2: '2017-10-30'
                     }
                 ]
             }
@@ -241,60 +272,48 @@
                 })
                 s.pitch = true
                 this.stateName = s.name
-                if (s.name == '未开始') {
-                    let add = []
-                    this.oldContents.map(val => {
-                        if (val.state1) {
-                            add.push(val)
-                        }
-                    })
-                    this.contents = add
-                } else if (s.name == '进行中') {
-                    let add = []
-                    this.oldContents.map(val => {
-                        if (val.state2) {
-                            add.push(val)
-                        }
-                    })
-                    this.contents = add
-                } else if (s.name == '已失效') {
-                    let add = []
-                    this.oldContents.map(val => {
-                        if (val.state3) {
-                            add.push(val)
-                        }
-                    })
-                    this.contents = add
+                let add = []
+                if (s.name == '全部') {
+                    add = this.oldContents
                 } else {
-                    let add = []
                     this.oldContents.map(val => {
-                        add.push(val)
+                        if (s.name == val.stateName) {
+                            add.push(val)
+                        }
                     })
-                    this.contents = add
                 }
-                if (this.contents == []) {
-                    this.tipsType == true
-                }
-                // let a = Math.ceil(this.contents.length / 10)
-                // this.totalPage = a
+                this.filterContents = add
+                this.contents = add.slice(0, this.eachPage)
+                this.currPage = 1
             },
             //状态框点击事件
             stateFun() {
                 this.stateType = !this.stateType
             },
             //编辑事件
-            editFun() {
+            editFun(h) {
+                if (h) {
+                    this.$setItem('editObj', h)
+                }
                 // sessionStorage.setItem('editObj', JSON.stringify({ name: 123 }))
-                this.$setItem('editObj', { name: 123 })
                 this.$router.push('/index/edit_groupManagement')
+            },
+            //判断页数来更新表格
+            pageNew() {
+                this.contents = this.filterContents.slice(
+                    (this.currPage - 1) * this.eachPage,
+                    this.currPage * this.eachPage
+                )
             },
             //点击页数事件
             pageClick(page) {
                 this.currPage = page
+                this.pageNew()
             },
             // 上一页事件
             upperFun() {
                 this.currPage = this.currPage > 1 ? this.currPage - 1 : 1
+                this.pageNew()
             },
             // 下一页事件
             lowerFun() {
@@ -302,6 +321,7 @@
                     this.currPage < this.totalPage
                         ? this.currPage + 1
                         : this.totalPage
+                this.pageNew()
             },
             //页数确认事件
             page_bottomFun() {
@@ -311,12 +331,10 @@
                     this.newNumber = 1
                 }
                 this.currPage = this.newNumber
+                this.pageNew()
             },
             //搜索事件
             searchFun() {
-                if (this.contents == []) {
-                    this.tipsType == true
-                }
                 let arr = []
                 this.oldContents.map(val => {
                     if (val.name.includes(this.searchVal)) {
@@ -328,8 +346,12 @@
             }
         },
         computed: {
+            //总页数
             totalPage() {
-                let a = Math.ceil(this.contents.length / this.eachPage)
+                let a = 1
+                if (this.filterContents.length) {
+                    a = Math.ceil(this.filterContents.length / this.eachPage)
+                }
                 return a
             }
         },
@@ -338,6 +360,7 @@
             let b = Math.trunc(a / (0.0276 * document.body.clientWidth))
             this.contents = this.oldContents.slice(0, b)
             this.eachPage = b
+            this.filterContents = this.oldContents
         }
     }
 </script>
