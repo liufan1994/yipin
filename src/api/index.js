@@ -1,8 +1,8 @@
 /*
  * @Author: hzq
  * @Date: 2018-08-28 15:55:55
- * @Last Modified by: hzq
- * @Last Modified time: 2018-12-10 10:23:52
+ * @Last Modified by: lf
+ * @Last Modified time: 2018-12-22 23:10:26
  * @文件说明: 全局$api插件
  */
 import Url from './url'

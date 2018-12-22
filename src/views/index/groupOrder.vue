@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-17 19:47:53
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 17:21:50
+ * @Last Modified time: 2018-12-22 23:52:37
  * @文件说明: 团购订单
  */
  <template>
@@ -12,6 +12,7 @@
             <div class="list_list">
                 <div class="list_list_title">
                     <div class="list_list_title1" v-for="i in titles" :key="i.name" :style="{width:i.styleA}"> {{i.name}} </div>
+                    {{username}}
                 </div>
                 <div class="list_list_content">
                     <div class="list_list_content1" v-for="h in contents" :key="h.article_id">
@@ -57,10 +58,11 @@
                 this.getArtList()
             },
             getArtList() {
+                // 文章列表接口
                 axios
                     .get('https://open-api.beone.app/web/article/getArticleList', {
                         params: {
-                            user_id: 102334,
+                            user_id: this.$getItem('user_id'),
                             page: this.currPage,
                             page_size: 3
                         },
@@ -71,6 +73,7 @@
                         }
                     })
                     .then(response => {
+                        this.userId = response.data.user_id
                         this.contents = response.data.data.data_list
                         this.pageObj = response.data.data
                         delete this.pageObj.data_list
@@ -82,6 +85,15 @@
         },
         created() {
             this.getArtList()
+            this.$api
+                .login({
+                    user_id: 102334,
+                    page: this.currPage,
+                    page_size: 3
+                })
+                .then(res => {
+                    this.username = res.data.username
+                })
         }
     }
 </script>

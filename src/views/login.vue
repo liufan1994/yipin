@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-12 14:32:27
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-21 16:06:25
+ * @Last Modified time: 2018-12-22 23:51:20
  * @文件说明:登录页面
  */
 <template>
@@ -12,7 +12,7 @@
         <!-- 背景LOGO -->
         <img class="title" src="../assets/images/title.png">
         <!-- 登录框 -->
-        <div class="login_bg">
+        <div class="login_bg" @keyup.enter="buttonFun">
             <p class="login_title">登录</p>
             <div class="input_bg">
                 <img class="input_icon" src="../assets/images/phone.png" alt="icon">
@@ -106,6 +106,16 @@
                         center: true
                     })
                 } else {
+                    // 登录接口
+                    // this.$api
+                    //     .login({
+                    //         phone: this.phoneType,
+                    //         code: this.codeType
+                    //     })
+                    //     .then(res => {
+                    //         this.$setItem('user_id', res.data.user_id)
+                    //         this.user_name = res.data.user_name
+                    // })
                     this.$router.push('/index/index1')
                 }
             }

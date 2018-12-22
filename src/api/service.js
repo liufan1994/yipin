@@ -1,8 +1,8 @@
 /*
  * @Author: hzq
  * @Date: 2018-08-28 16:05:27
- * @Last Modified by: hzq
- * @Last Modified time: 2018-12-10 10:25:18
+ * @Last Modified by: lf
+ * @Last Modified time: 2018-12-22 23:06:19
  * @文件说明: 请求配置
  */
 import axios from 'axios'
@@ -22,7 +22,10 @@ if (process.env.PATH_ENV === 'prod') {
 const Service = axios.create({
     // timeout: 1000 * 6, // 6秒超时
     baseURL,
-    headers: { 'Content-Type': 'application/json; charset=UTF-8' }
+    headers: {
+        'Content-Type': 'application/json; charset=UTF-8',
+        'X-APPID': 'x9UdyFXeEwMp'
+    }
 })
 // 添加请求拦截器
 Service.interceptors.request.use(

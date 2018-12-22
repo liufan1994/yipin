@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-18 14:07:07
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-22 15:59:30
+ * @Last Modified time: 2018-12-22 23:53:38
  * @文件说明: 团购管理
  */
 <template>
@@ -25,7 +25,7 @@
                             <p class="state_text" v-for="s in states" :key="s.name" @click="stateTextFun(s)">{{s.name}}</p>
                         </div>
                     </div>
-                    <input class="list_top_right_input" type="text" placeholder="团购名称关键词" v-model="searchVal">
+                    <input class="list_top_right_input" type="text" placeholder="团购名称关键词" v-model="searchVal" @keyup.enter="searchFun">
                     <div class="list_top_right_search" @click="searchFun">
                         <img class="list_top_right_search1" src="../../assets/images/top_search.png" alt="icon">
                         <p class="list_top_right_search2">搜索</p>
@@ -336,13 +336,18 @@
             //搜索事件
             searchFun() {
                 let arr = []
-                this.oldContents.map(val => {
+                let _arr = this.filterContents
+                if (this.stateName === '全部') {
+                    _arr = this.oldContents
+                }
+                _arr.map(val => {
                     if (val.name.includes(this.searchVal)) {
-                        console.log(val.name)
                         arr.push(val)
                     }
                 })
-                this.contents = arr
+                this.filterContents = arr
+                this.contents = arr.slice(0, this.eachPage)
+                this.currPage = 1
             }
         },
         computed: {
