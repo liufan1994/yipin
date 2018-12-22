@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-18 14:07:07
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 23:00:21
+ * @Last Modified time: 2018-12-21 18:41:55
  * @文件说明: 团购管理
  */
 <template>
@@ -11,15 +11,19 @@
             <div class="list_top">
                 <div class="list_top_left">
                     <p class="list_top_left_title">团购管理</p>
-                    <div class="list_top_left_add">
+                    <div class="list_top_left_add" @click="editFun">
                         <img class="list_top_left_add1" src="../../assets/images/top_add.png" alt="icon">
                         <p class="list_top_left_add2">新增团购</p>
                     </div>
                 </div>
                 <div class="list_top_right">
-                    <div class="list_top_right_state">
-                        <p>全部</p>
-                        <img class="list_top_right_state2" src="../../assets/images/top_arrow.png" alt="icon">
+                    <div class="list_top_right_state" @click="stateFun">
+                        <p>{{stateName}}</p>
+                        <img class="list_top_right_state2" src="../../assets/images/top_arrow.png" alt="icon" v-if="!stateType">
+                        <img class="list_top_right_state2" src="../../assets/images/top_arrowa.png" alt="icon" v-else>
+                        <div class="state" v-if="stateType">
+                            <p class="state_text" v-for="s in states" :key="s.name" @click="stateTextFun(s)">{{s.name}}</p>
+                        </div>
                     </div>
                     <input class="list_top_right_input" type="text" placeholder="团购名称关键词" v-model="searchVal">
                     <div class="list_top_right_search" @click="searchFun">
@@ -33,6 +37,7 @@
                     <div class="list_list_title1" v-for="(i,index) in titles" :key="i.name" :style="{width:i.styleA,textIndent:index?'0.8vw':'2.08vw'}">{{i.name}}</div>
                 </div>
                 <div class="list_list_content">
+                    <p class="list_list_content_tips" v-if="tipsType">无数据</p>
                     <div class="list_list_content1" v-for="h in contents" :key="h.article_id">
                         <div class="list_list_content2" :style="{width:titles[0].styleA}" style="text-indent:2.08vw;">{{h.name}}</div>
                         <div class="created_price" :style="{width:titles[1].styleA}">{{h.price}}</div>
@@ -68,7 +73,7 @@
                     </div>
                 </div>
                 <div class="page_right">
-                    <p class="page_text">共{{totalPage}}页/{{oldContents.length}}条，每页显示{{eachPage}}条，到第</p>
+                    <p class="page_text">共{{totalPage}}页/{{contents.length}}条，每页显示{{eachPage}}条，到第</p>
                     <input class="page_input" type="number" v-model="newNumber">
                     <p class="page_text">页</p>
                     <p class="page_bottom" @click="page_bottomFun">确认</p>
@@ -85,6 +90,27 @@
         name: 'groupManagement',
         data() {
             return {
+                tipsType: true,
+                states: [
+                    {
+                        pitch: true,
+                        name: '全部'
+                    },
+                    {
+                        pitch: false,
+                        name: '未开始'
+                    },
+                    {
+                        pitch: false,
+                        name: '进行中'
+                    },
+                    {
+                        pitch: false,
+                        name: '已失效'
+                    }
+                ],
+                stateName: '全部',
+                stateType: false,
                 searchVal: '',
                 newNumber: 0,
                 currPage: 1,
@@ -208,6 +234,54 @@
             }
         },
         methods: {
+            //状态选择框选择事件
+            stateTextFun(s) {
+                this.states.map(val => {
+                    val.pitch = false
+                })
+                s.pitch = true
+                this.stateName = s.name
+                if (s.name == '未开始') {
+                    let add = []
+                    this.oldContents.map(val => {
+                        if (val.state1) {
+                            add.push(val)
+                        }
+                    })
+                    this.contents = add
+                } else if (s.name == '进行中') {
+                    let add = []
+                    this.oldContents.map(val => {
+                        if (val.state2) {
+                            add.push(val)
+                        }
+                    })
+                    this.contents = add
+                } else if (s.name == '已失效') {
+                    let add = []
+                    this.oldContents.map(val => {
+                        if (val.state3) {
+                            add.push(val)
+                        }
+                    })
+                    this.contents = add
+                } else {
+                    let add = []
+                    this.oldContents.map(val => {
+                        add.push(val)
+                    })
+                    this.contents = add
+                }
+                if (this.contents == []) {
+                    this.tipsType == true
+                }
+                // let a = Math.ceil(this.contents.length / 10)
+                // this.totalPage = a
+            },
+            //状态框点击事件
+            stateFun() {
+                this.stateType = !this.stateType
+            },
             //编辑事件
             editFun() {
                 // sessionStorage.setItem('editObj', JSON.stringify({ name: 123 }))
@@ -240,6 +314,9 @@
             },
             //搜索事件
             searchFun() {
+                if (this.contents == []) {
+                    this.tipsType == true
+                }
                 let arr = []
                 this.oldContents.map(val => {
                     if (val.name.includes(this.searchVal)) {
@@ -252,7 +329,7 @@
         },
         computed: {
             totalPage() {
-                let a = Math.ceil(this.oldContents.length / this.eachPage)
+                let a = Math.ceil(this.contents.length / this.eachPage)
                 return a
             }
         },
@@ -268,7 +345,6 @@
     .groupManagement {
         .list {
             width: 83.7vw;
-            // min-height: calc(100vh - 6.97vw);
             border-radius: 0.42vw;
             background-color: #fff;
             .list_top {
@@ -310,6 +386,7 @@
                 .list_top_right {
                     display: flex;
                     .list_top_right_state {
+                        position: relative;
                         display: flex;
                         justify-content: space-between;
                         align-items: center;
@@ -319,9 +396,34 @@
                         border-radius: 0.21vw;
                         padding: 0 0.83vw;
                         cursor: pointer;
+                        user-select: none;
                         .list_top_right_state2 {
                             width: 0.78vw;
                             height: 0.42vw;
+                        }
+                        .state {
+                            position: absolute;
+                            top: 2.5vw;
+                            left: 0;
+                            z-index: 10002;
+                            width: 8.25vw;
+                            text-align: center;
+                            line-height: 2.5vw;
+                            border: 1px solid #e6e6e6;
+                            background-color: #fff;
+                            cursor: pointer;
+                            user-select: none;
+                            .state_text {
+                                width: 6vw;
+                                height: 3vw;
+                                margin: 0 auto;
+                                border-bottom: 1px solid #f7f7f7;
+                            }
+                            .state_text:hover {
+                                width: 8.25vw;
+                                background-color: #0e4b4a;
+                                color: #fff;
+                            }
                         }
                     }
                     .list_top_right_input {
@@ -371,6 +473,13 @@
                     }
                 }
                 .list_list_content {
+                    .list_list_content_tips {
+                        height: 2.76vw;
+                        text-align: center;
+                        line-height: 2.76vw;
+                        color: #999;
+                        background-color: #fff;
+                    }
                     .list_list_content1 {
                         display: flex;
                         .list_list_content2,

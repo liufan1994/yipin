@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-13 15:39:09
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 17:24:22
+ * @Last Modified time: 2018-12-21 18:55:57
  * @文件说明: 侧边栏、顶部栏公用页面+子路由渲染
  */
 <template>
@@ -12,13 +12,17 @@
                 <img class="name_logo" src="../assets/images/logo.png" alt="LOGO">
                 <span class="name_title">商家管理平台</span>
             </div>
-            <div class="private">
+            <div class="private" @click="privateFun">
                 <img class="private_head" src="../assets/images/head.png" alt="icon">
                 <div>
                     <p class="private_name">味真鲜餐饮有限公司</p>
                     <p class="private_job">管理员</p>
                 </div>
-                <img class="private_down" src="../assets/images/down.png" alt="icon">
+                <img class="private_down" src="../assets/images/down.png" alt="icon" v-if="!downBoxType">
+                <img class="private_down" src="../assets/images/downa.png" alt="icon" v-else>
+                <div class="downBox" v-if="downBoxType">
+                    <div class="downBox_SignOut" @click="SignOutFun">退出</div>
+                </div>
             </div>
             <div class="news">
                 <img class="news_img" src="../assets/images/news.png" alt="icon">
@@ -56,6 +60,7 @@
         name: 'index',
         data() {
             return {
+                downBoxType: false,
                 currIndex: 0,
                 // JSON [{},{},{}]
                 sidebar: [
@@ -106,6 +111,14 @@
             }
         },
         methods: {
+            //点击退出事件
+            SignOutFun() {
+                this.$router.push('/login')
+            },
+            //点击个人信息事件
+            privateFun() {
+                this.downBoxType = !this.downBoxType
+            },
             nextPage() {
                 this.currPage++
                 this.tableData = [
@@ -119,6 +132,7 @@
                     }
                 ]
             },
+            //点击菜单事件
             sidebar_menuFun(i, index) {
                 if (i.children) {
                     i.open = !i.open
@@ -129,6 +143,7 @@
                     this.$router.push(i.routerA)
                 }
             },
+            //点击子菜单事件
             childrenFun(h, index) {
                 this.currIndex = index
                 this.sidebar.forEach((val, _index) => {
@@ -147,10 +162,12 @@
 </script>
 <style lang="scss" scoped>
     .index {
+        // width: 100vw;
         .top {
             position: fixed;
             top: 0;
             left: 0;
+            z-index: 10003;
             display: flex;
             height: 5.57vw;
             .name {
@@ -168,6 +185,7 @@
                 }
             }
             .private {
+                position: relative;
                 display: flex;
                 justify-content: center;
                 align-items: center;
@@ -191,6 +209,31 @@
                     width: 1vw;
                     height: 0.625vw;
                     margin-left: 2.08vw;
+                }
+                .downBox {
+                    position: absolute;
+                    top: 5.57vw;
+                    z-index: 10004;
+                    width: 18.07vw;
+                    text-align: center;
+                    line-height: 5vw;
+                    border: 1px solid #e6e6e6;
+                    background-color: #fff;
+                    cursor: pointer;
+                    user-select: none;
+                    .downBox_SignOut {
+                        width: 16vw;
+                        height: 5vw;
+                        margin: 0 auto;
+                        border-bottom: 1px solid #f7f7f7;
+                        font-size: 1.4vw;
+                        font-weight: 700;
+                    }
+                    .downBox_SignOut:hover {
+                        width: 18.07vw;
+                        background-color: #0e4b4a;
+                        color: #ebc5a0;
+                    }
                 }
             }
             .news {

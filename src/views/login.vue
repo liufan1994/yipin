@@ -2,7 +2,7 @@
  * @Author: lf
  * @Date: 2018-12-12 14:32:27
  * @Last Modified by: lf
- * @Last Modified time: 2018-12-19 22:37:19
+ * @Last Modified time: 2018-12-21 16:06:25
  * @文件说明:登录页面
  */
 <template>
@@ -16,35 +16,35 @@
             <p class="login_title">登录</p>
             <div class="input_bg">
                 <img class="input_icon" src="../assets/images/phone.png" alt="icon">
-                <input type="number" placeholder="手机号">
+                <input type="number" placeholder="手机号" v-model="phoneType">
             </div>
             <div class="input_bg">
                 <img class="input_icon" src="../assets/images/password.png" alt="icon">
-                <input type="text" placeholder="密码">
+                <input type="text" placeholder="密码" v-model="passwordType">
             </div>
             <div class="input_bg1">
                 <div class="input_left">
                     <img class="input_icon" src="../assets/images/code.png" alt="icon">
-                    <input type="text" placeholder="验证码">
+                    <input type="text" placeholder="验证码" v-model="codeType">
                 </div>
                 <div class="input_right">
-                    <img class="change" src="../assets/images/change_icon.png" alt="icon">
+                    <!-- <img class="change" src="../assets/images/change_icon.png" alt="icon"> -->
                     <img class="code_img" src="../assets/images/code_img.png" alt="icon">
                 </div>
             </div>
-            <div class="operation">
+            <!-- <div class="operation">
                 <div class="automatic" @click="automaticFun">
                     <div class="checkbox" :class="{checkbox_pitch:automatic1}"></div>
                     <p class="automatic_text">下次自动登录</p>
                 </div>
                 <p class="forget">忘记密码？</p>
-            </div>
+            </div> -->
             <div class="button" @click="buttonFun">登录</div>
-            <div class="line"></div>
+            <!-- <div class="line"></div>
             <div class="enroll">
                 <p class="enroll_text">没有账号？先注册一个</p>
                 <img class="enroll_img" src="../assets/images/arrow.png" alt="icon">
-            </div>
+            </div> -->
         </div>
         <div class="bottom">
             <p class="bottom_text">© 一品天下餐饮管理有限公司</p>
@@ -58,15 +58,56 @@
         name: 'login',
         data() {
             return {
-                automatic1: false
+                //复选框切换：默认未选中
+                automatic1: false,
+                //input框：手机号码
+                phoneType: '',
+                //input框：密码
+                passwordType: '',
+                //input框：验证码
+                codeType: ''
             }
         },
         methods: {
+            //下次是否自动登录事件
             automaticFun() {
                 this.automatic1 = !this.automatic1
             },
+            //点击登录事件
             buttonFun() {
-                this.$router.push('/index/index1')
+                if (this.phoneType == '') {
+                    this.$message({
+                        message: '请输入电话号码',
+                        center: true
+                    })
+                } else if (!/^1[34578]\d{9}$/.test(this.phoneType)) {
+                    this.$message({
+                        message: '请输入正确的电话号码',
+                        center: true
+                    })
+                } else if (this.passwordType == '') {
+                    this.$message({
+                        message: '请输入密码',
+                        center: true
+                    })
+                } else if (this.passwordType != '123456') {
+                    this.$message({
+                        message: '请输入正确的密码',
+                        center: true
+                    })
+                } else if (this.codeType == '') {
+                    this.$message({
+                        message: '请输入验证码',
+                        center: true
+                    })
+                } else if (this.codeType != 'ktlu') {
+                    this.$message({
+                        message: '请输入正确的验证码',
+                        center: true
+                    })
+                } else {
+                    this.$router.push('/index/index1')
+                }
             }
         }
     }
@@ -105,7 +146,7 @@
                 width: 20.83vw;
                 height: 3vw;
                 border: 0.1vw solid #e6e6e6;
-                margin-bottom: 0.42vw;
+                margin-bottom: 1.4vw;
                 border-radius: 0.21vw;
                 .input_icon {
                     width: 1.67vw;
@@ -183,7 +224,7 @@
             font-weight: 700;
             border-radius: 0.42vw;
             box-shadow: 0px 7px 27px 0px rgba(0, 0, 0, 0.2);
-            margin: 1.4vw 0;
+            margin: 3.8vw 0;
             cursor: pointer;
             user-select: none;
         }
