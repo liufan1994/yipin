@@ -81,11 +81,12 @@ module.exports = {
         net: 'empty',
         tls: 'empty',
         child_process: 'empty'
+    },
+    externals: {
+        vue: 'Vue',
+        'vue-router': 'VueRouter',
+        vuex: 'Vuex',
+        axios: 'axios',
+        'element-ui': 'ELEMENT'
     }
-    // externals: {
-    //     vue: 'Vue',
-    //     'vue-router': 'VueRouter',
-    //     vuex: 'Vuex',
-    //     axios: 'axios'
-    // }
 }
